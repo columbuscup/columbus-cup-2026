@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Columbus Cup 2026 – La Romana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#071a09;--bg2:#0c2610;--gold:#c9a84c;--gold-l:#e8c96d;--gold-p:#f5e6b8;--cream:#f4eddb;--ven:#CF142B;--ven-l:#ff7070;--ven-bg:#1f0406;--esp:#ffc400;--esp-bg:#1f1600;--green:#2e7d39;--row1:#0d2410;--row2:#102814;--line:#1e4a22;--box:#091808;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--cream);font-family:'Montserrat',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 40% at 15% 15%,rgba(46,125,57,.15) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 85% 80%,rgba(201,168,76,.08) 0%,transparent 60%);}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px;}
+
+/* ADMIN BAR */
+#admin-bar{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(7,26,9,.97);border-bottom:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:space-between;padding:8px 20px;backdrop-filter:blur(8px);}
+.ab-left{display:flex;align-items:center;gap:10px;}
+.ab-mode{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;}
+.ab-mode.viewer{color:rgba(244,237,219,.4);}.ab-mode.admin{color:var(--gold);}
+.mode-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;flex-shrink:0;}
+.mode-dot.viewer{background:rgba(244,237,219,.2);}.mode-dot.admin{background:var(--gold);box-shadow:0 0 8px var(--gold);animation:pulse 1.5s ease infinite;}
+.ab-right{display:flex;gap:8px;}
+.ab-btn{border:none;border-radius:8px;padding:6px 14px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;}
+.btn-login{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold);}
+.btn-login:hover{background:rgba(201,168,76,.22);}
+.btn-logout{background:rgba(255,70,70,.1);border:1px solid rgba(255,70,70,.3);color:#ff8080;}
+.btn-logout:hover{background:rgba(255,70,70,.2);}
+.btn-save{background:rgba(201,168,76,.15);border:1px solid var(--gold);color:var(--gold);}
+.btn-save:hover{background:rgba(201,168,76,.28);transform:translateY(-1px);}
+.btn-save.saving{opacity:.5;pointer-events:none;}
+
+/* LOGIN MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--bg2);border:1px solid rgba(201,168,76,.4);border-radius:20px;padding:40px 36px;width:320px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.7);transform:scale(.9);transition:transform .25s;position:relative;}
+.modal-overlay.open .modal{transform:scale(1);}
+.modal-ico{font-size:36px;margin-bottom:14px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.modal-sub{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(244,237,219,.35);margin-bottom:28px;}
+.modal input{width:100%;background:var(--box);border:1px solid rgba(201,168,76,.25);border-radius:10px;padding:13px 16px;color:var(--cream);font-size:16px;font-family:'Montserrat',sans-serif;margin-bottom:16px;outline:none;transition:border-color .2s;letter-spacing:4px;text-align:center;}
+.modal input:focus{border-color:var(--gold);}
+.modal input::placeholder{letter-spacing:1px;color:rgba(244,237,219,.2);font-size:13px;}
+.modal-btn{width:100%;padding:13px;background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(201,168,76,.08));border:1px solid var(--gold);border-radius:10px;color:var(--gold);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s;}
+.modal-btn:hover{background:rgba(201,168,76,.25);}
+.modal-err{color:#ff7070;font-size:11px;margin-top:10px;min-height:16px;}
+.modal-x{position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(244,237,219,.3);font-size:22px;cursor:pointer;line-height:1;transition:color .2s;}
+.modal-x:hover{color:var(--cream);}
+
+/* HERO */
+.hero{text-align:center;padding:80px 20px 36px;border-bottom:1px solid rgba(201,168,76,.2);position:relative;}
+.hero::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:140px;height:2px;background:var(--gold);}
+.logo-wrap{margin:0 auto 28px;width:170px;}
+.logo-wrap img{width:100%;filter:drop-shadow(0 6px 24px rgba(201,168,76,.4));}
+.hero-eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(38px,8vw,88px);font-weight:900;line-height:.88;letter-spacing:-2px;background:linear-gradient(150deg,var(--gold-p) 0%,var(--gold) 45%,#a07830 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.5vw,20px);font-weight:300;letter-spacing:7px;text-transform:uppercase;color:rgba(244,237,219,.65);margin-bottom:6px;}
+.hero-dates{font-size:11px;letter-spacing:3px;color:var(--gold-l);opacity:.8;}
+
+/* SCOREBOARD */
+.sb-section{padding:36px 0 0;}
+.sb-label{text-align:center;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(244,237,219,.4);margin-bottom:16px;}
+.scoreboard{display:flex;align-items:stretch;justify-content:center;background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.3);border-radius:20px;max-width:560px;margin:0 auto;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3);}
+.st{flex:1;padding:24px 20px;text-align:center;}
+.st.ven{background:rgba(207,20,43,.05);}.st.esp{background:rgba(255,196,0,.04);}
+.st-flag{font-size:36px;margin-bottom:6px;display:block;}
+.st-name{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.st-num{font-family:'Playfair Display',serif;font-size:80px;font-weight:900;line-height:1;transition:all .4s cubic-bezier(.34,1.56,.64,1);}
+.st-num.vc{color:#ff6b6b;text-shadow:0 0 30px rgba(255,107,107,.3);}
+.st-num.ec{color:var(--esp);text-shadow:0 0 30px rgba(255,196,0,.3);}
+.live-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,60,60,.12);border:1px solid rgba(255,60,60,.35);border-radius:20px;padding:5px 14px;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#ff7070;margin-top:10px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#ff6060;animation:pulse 1.4s ease infinite;}
+.sb-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 12px;gap:8px;}
+.sb-sep{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);}
+.sb-vs{font-family:'Playfair Display',serif;font-size:12px;color:var(--gold);letter-spacing:3px;}
+.sb-note{text-align:center;font-size:11px;color:rgba(244,237,219,.35);margin-top:12px;letter-spacing:1px;}
+.sb-lock{display:flex;align-items:center;justify-content:center;gap:8px;max-width:560px;margin:10px auto 0;font-size:10px;letter-spacing:2px;color:rgba(244,237,219,.22);text-transform:uppercase;}
+.sb-lock::before,.sb-lock::after{content:'';flex:1;height:1px;background:rgba(201,168,76,.1);}
+
+/* TABS */
+.tabs-wrap{margin-top:44px;border-bottom:1px solid rgba(201,168,76,.18);}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 22px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(244,237,219,.4);cursor:pointer;white-space:nowrap;transition:all .22s;}
+.tab-btn:hover{color:var(--gold-l);}.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-pane{display:none;padding:32px 0 60px;}.tab-pane.active{display:block;}
+
+/* PROGRAM */
+.day-card{background:rgba(18,40,21,.6);border:1px solid rgba(201,168,76,.14);border-radius:18px;margin-bottom:20px;overflow:hidden;transition:border-color .25s,transform .25s;}
+.day-card:hover{border-color:rgba(201,168,76,.32);transform:translateY(-2px);}
+.day-card.final{border-color:rgba(201,168,76,.35);}
+.day-hdr{display:flex;align-items:center;gap:18px;padding:22px 28px;background:linear-gradient(90deg,rgba(201,168,76,.07),transparent);border-bottom:1px solid rgba(201,168,76,.1);}
+.day-hdr.final{background:linear-gradient(90deg,rgba(201,168,76,.14),transparent);}
+.day-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--gold);opacity:.45;line-height:1;min-width:52px;}
+.day-num.final{opacity:.9;}.day-meta{flex:1;}
+.day-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--cream);margin-bottom:4px;}
+.day-course{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--green);}
+.day-tag{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:20px;padding:5px 14px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l);white-space:nowrap;}
+.day-tag.sp{background:rgba(46,125,57,.15);border-color:rgba(46,125,57,.4);color:#6dd68a;}
+.day-tag.gd{background:rgba(201,168,76,.18);border-color:rgba(201,168,76,.5);}
+.day-body{padding:22px 28px 26px;}
+.tl{position:relative;padding-left:28px;}
+.tl::before{content:'';position:absolute;left:7px;top:10px;bottom:10px;width:1px;background:linear-gradient(to bottom,var(--gold),rgba(201,168,76,.08));}
+.tl-item{position:relative;padding-bottom:20px;}.tl-item:last-child{padding-bottom:0;}
+.tl-item::before{content:'';position:absolute;left:-21px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,.5);}
+.tl-item.big::before{width:13px;height:13px;left:-23px;top:5px;background:linear-gradient(135deg,var(--gold-l),var(--gold));box-shadow:0 0 16px rgba(201,168,76,.7);}
+.tl-time{font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:3px;text-transform:uppercase;}
+.tl-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--cream);margin-bottom:3px;}
+.tl-detail{font-size:11px;color:rgba(244,237,219,.5);line-height:1.6;}
+.tl-badge{display:inline-block;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:2px 8px;font-size:9px;letter-spacing:1.5px;color:var(--gold-l);margin-top:6px;text-transform:uppercase;}
+
+/* MATCHES */
+.m-day-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin:0 0 14px;display:flex;align-items:center;gap:12px;}
+.m-day-title::after{content:'';flex:1;height:1px;background:rgba(201,168,76,.2);}
+.m-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:32px;}
+.m-card{background:rgba(18,40,21,.7);border:1px solid rgba(201,168,76,.14);border-radius:14px;padding:18px;transition:border-color .22s;}
+.m-card:hover{border-color:rgba(201,168,76,.3);}
+.m-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.m-num{font-size:9px;letter-spacing:2px;color:rgba(244,237,219,.3);text-transform:uppercase;}
+.m-tee{font-size:10px;color:rgba(201,168,76,.6);}
+.m-row{display:flex;align-items:center;gap:10px;padding:7px 0;}
+.m-row+.m-row{border-top:1px solid rgba(201,168,76,.07);}
+.m-flag{font-size:18px;}
+.m-name{flex:1;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:500;color:var(--cream);}
+.m-name-input{flex:1;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);border-radius:7px;padding:5px 10px;color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:500;outline:none;transition:border-color .2s;width:100%;}
+.m-name-input:focus{border-color:var(--gold);background:rgba(201,168,76,.12);}
+.m-name-input::placeholder{color:rgba(244,237,219,.2);}
+.m-dot{width:10px;height:10px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.2);transition:all .3s;flex-shrink:0;}
+.m-dot.dv{background:#e05555;border-color:#e05555;box-shadow:0 0 8px rgba(224,85,85,.5);}
+.m-dot.de{background:var(--esp);border-color:var(--esp);box-shadow:0 0 8px rgba(255,196,0,.5);}
+.m-dot.dh{background:var(--gold);border-color:var(--gold);box-shadow:0 0 8px rgba(201,168,76,.5);}
+.m-foot{margin-top:12px;padding-top:12px;border-top:1px solid rgba(201,168,76,.1);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.m-res{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(244,237,219,.28);}
+.m-res.rv{color:#ff8080;}.m-res.re{color:var(--esp);}.m-res.rh{color:var(--gold);}
+.m-hoyo-wrap{display:flex;align-items:center;gap:5px;}
+.m-hoyo-label{font-size:9px;letter-spacing:1px;color:rgba(244,237,219,.3);text-transform:uppercase;}
+.m-hoyo-val{font-size:11px;font-weight:600;color:var(--gold-l);}
+.m-hoyo-input{width:50px;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);border-radius:6px;padding:4px 6px;color:var(--gold-l);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;outline:none;text-align:center;transition:border-color .2s;}
+.m-hoyo-input:focus{border-color:var(--gold);}
+.m-hoyo-input::placeholder{color:rgba(244,237,219,.2);}
+.rbts{display:flex;gap:5px;}
+.rb{border:none;border-radius:8px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;transition:all .18s;opacity:.6;}
+.rb:hover{opacity:1;transform:scale(1.05);}.rb.active{opacity:1;}
+.rb.ven{background:rgba(207,20,43,.18);border:1px solid rgba(207,20,43,.4);color:#ff9090;}
+.rb.ven.active{background:rgba(207,20,43,.38);box-shadow:0 0 12px rgba(207,20,43,.3);}
+.rb.half{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--gold-l);}
+.rb.half.active{background:rgba(201,168,76,.26);box-shadow:0 0 12px rgba(201,168,76,.3);}
+.rb.esp{background:rgba(255,196,0,.09);border:1px solid rgba(255,196,0,.3);color:var(--esp);}
+.rb.esp.active{background:rgba(255,196,0,.23);box-shadow:0 0 12px rgba(255,196,0,.3);}
+
+/* ADMIN NOTICE */
+.admin-notice{display:none;align-items:center;gap:10px;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);border-radius:10px;padding:11px 16px;margin-bottom:22px;font-size:11px;color:rgba(244,237,219,.5);}
+.admin-notice.show{display:flex;}
+.admin-notice strong{color:var(--gold);}
+
+/* LEADERBOARD */
+.lb-wrap{background:rgba(18,40,21,.6);border:1px solid rgba(201,168,76,.2);border-radius:18px;overflow:hidden;margin-bottom:16px;}
+.lb-hdr{display:flex;padding:16px 24px;background:rgba(201,168,76,.07);border-bottom:1px solid rgba(201,168,76,.15);}
+.lc{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);}
+.lc.day{flex:0 0 90px;}.lc.fmt{flex:1;}.lc.pts{flex:0 0 70px;text-align:center;}.lc.res{flex:0 0 90px;text-align:center;}
+.lb-row{display:flex;align-items:center;padding:14px 24px;border-bottom:1px solid rgba(201,168,76,.07);transition:background .2s;}
+.lb-row:last-child{border-bottom:none;}.lb-row:hover{background:rgba(201,168,76,.04);}
+.ld{flex:0 0 90px;font-size:11px;color:var(--gold-l);font-weight:600;}
+.lf{flex:1;font-size:12px;color:rgba(244,237,219,.6);}
+.lp{flex:0 0 70px;text-align:center;font-family:'Playfair Display',serif;font-size:26px;font-weight:700;}
+.lp.ven{color:#ff8080;}.lp.esp{color:var(--esp);}
+.lr{flex:0 0 90px;text-align:center;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(244,237,219,.3);}
+.lb-total{display:flex;align-items:center;padding:18px 24px;background:rgba(201,168,76,.08);border-top:1px solid rgba(201,168,76,.25);}
+.lt-label{flex:1;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:600;}
+.lt-num{flex:0 0 70px;text-align:center;font-family:'Playfair Display',serif;font-size:36px;font-weight:900;}
+.lt-num.ven{color:#ff7070;}.lt-num.esp{color:var(--esp);}
+
+/* INFO */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.ic{background:rgba(18,40,21,.6);border:1px solid rgba(201,168,76,.14);border-radius:14px;padding:20px 22px;}
+.ic-ico{font-size:28px;margin-bottom:10px;display:block;}
+.ic-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.ic-body{font-size:12px;color:rgba(244,237,219,.55);line-height:1.7;}
+.hl{color:var(--gold-l);}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,26,12,.97);border:1px solid var(--gold);border-radius:40px;padding:12px 28px;font-size:13px;font-weight:600;color:var(--gold-l);letter-spacing:1px;z-index:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px 20px;border-top:1px solid rgba(201,168,76,.12);margin-top:20px;}
+.footer p{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(244,237,219,.2);}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+@keyframes flash{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
+.flash-anim{animation:flash .4s ease;}
+@media(max-width:600px){.m-grid{grid-template-columns:1fr;}.st-num{font-size:60px;}.lc.res,.lr{display:none;}.day-tag{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- ADMIN BAR -->
+<div id="admin-bar">
+  <div class="ab-left">
+    <span class="mode-dot viewer" id="mode-dot"></span>
+    <span class="ab-mode viewer" id="mode-label">Modo Espectador</span>
+  </div>
+  <div class="ab-right">
+    <button class="ab-btn btn-save" id="btn-save" onclick="saveData()" style="display:none">💾 Guardar cambios</button>
+    <button class="ab-btn btn-logout" id="btn-logout" onclick="logout()" style="display:none">Salir</button>
+    <button class="ab-btn btn-login" id="btn-login" onclick="openLogin()">🔐 Admin</button>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeLogin()">✕</button>
+    <div class="modal-ico">🏆</div>
+    <div class="modal-title">Acceso Admin</div>
+    <div class="modal-sub">Columbus Cup 2026</div>
+    <input type="password" id="pw-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')tryLogin()">
+    <button class="modal-btn" onclick="tryLogin()">Entrar</button>
+    <div class="modal-err" id="pw-err"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="logo-wrap">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ctext y='100' font-size='80' text-anchor='middle' x='100'%3E🏆%3C/text%3E%3C/svg%3E" id="logo-img" alt="Columbus Cup 2026">
+  </div>
+  <p class="hero-eyebrow">⛳ Casa de Campo · La Romana 2026</p>
+  <h1 class="hero-title">COLUMBUS CUP</h1>
+  <p class="hero-sub">España vs. Venezuela</p>
+  <p class="hero-dates">28 de Abril — 3 de Mayo · 2026</p>
+</header>
+
+<!-- SCOREBOARD -->
+<section class="sb-section">
+  <p class="sb-label">Marcador Oficial del Torneo</p>
+  <div class="scoreboard">
+    <div class="st ven">
+      <span class="st-flag">🇻🇪</span>
+      <div class="st-name">Venezuela</div>
+      <div class="st-num vc" id="sVen">0</div>
+      <div class="live-pill"><div class="live-dot"></div>Live</div>
+    </div>
+    <div class="sb-mid">
+      <div class="sb-sep"></div><div class="sb-vs">VS</div><div class="sb-sep"></div>
+    </div>
+    <div class="st esp">
+      <span class="st-flag">🇪🇸</span>
+      <div class="st-name">España</div>
+      <div class="st-num ec" id="sEsp">0</div>
+      <div class="live-pill"><div class="live-dot"></div>Live</div>
+    </div>
+  </div>
+  <p class="sb-note" id="sbNote">Torneo aún no comenzado · El marcador se actualiza desde los partidos</p>
+  <div class="sb-lock">🔒 Solo el administrador puede modificar resultados</div>
+</section>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('programa',this)">📅 Programa</button>
+    <button class="tab-btn" onclick="switchTab('partidos',this)">⛳ Partidos</button>
+    <button class="tab-btn" onclick="switchTab('tabla',this)">🏆 Tabla</button>
+    <button class="tab-btn" onclick="switchTab('info',this)">ℹ️ Info</button>
+  </div>
+</div>
+
+<!-- TAB PROGRAMA -->
+<div id="tab-programa" class="tab-pane active">
+  <div class="day-card">
+    <div class="day-hdr"><div class="day-num">28</div><div class="day-meta"><div class="day-title">Martes 28 de Abril</div><div class="day-course">🌃 Noche de Apertura</div></div><div class="day-tag sp">Bienvenida</div></div>
+    <div class="day-body"><div class="tl">
+      <div class="tl-item big"><div class="tl-time">🕗 8:00 PM</div><div class="tl-title">🍽️ Cena de Bienvenida</div><div class="tl-detail">📍 Casa de Eduardo B.</div><div class="tl-badge">Dress Code: Smart Casual</div></div>
+      <div class="tl-item"><div class="tl-time">Después de cenar</div><div class="tl-title">🎲 Sorteo Oficial de Emparejamientos</div><div class="tl-detail">Equipos y parejas para el Miércoles.</div></div>
+    </div></div>
+  </div>
+  <div class="day-card">
+    <div class="day-hdr"><div class="day-num">29</div><div class="day-meta"><div class="day-title">Miércoles 29 de Abril</div><div class="day-course">⛳ Diente de Perro — Teeth of the Dog</div></div><div class="day-tag">Fourball · Match Play</div></div>
+    <div class="day-body"><div class="tl">
+      <div class="tl-item"><div class="tl-time">🕘 10:00 AM</div><div class="tl-title">🥞 Desayuno · Casa de Gabriel</div></div>
+      <div class="tl-item big"><div class="tl-time">🕐 1:40 PM — Primer Tee Time</div><div class="tl-title">🏌️ Ronda Oficial — Fourball Match Play</div><div class="tl-detail">📍 Diente de Perro · 6 partidos</div><div class="tl-badge">Fourball Best Ball</div></div>
+      <div class="tl-item"><div class="tl-time">🕗 8:00 PM</div><div class="tl-title">🍝 Cena · Piazzeta Chavon</div></div>
+    </div></div>
+  </div>
+  <div class="day-card">
+    <div class="day-hdr"><div class="day-num">30</div><div class="day-meta"><div class="day-title">Jueves 30 de Abril</div><div class="day-course">⛳ Country Golf Course</div></div><div class="day-tag">Scramble en Pareja</div></div>
+    <div class="day-body"><div class="tl">
+      <div class="tl-item big"><div class="tl-time">🕘 9:00 AM — Primer Tee Time</div><div class="tl-title">🏌️ Ronda Oficial — Scramble</div><div class="tl-detail">📍 Country Golf Course · 6 partidos</div></div>
+      <div class="tl-item"><div class="tl-time">🕑 2:00 PM</div><div class="tl-title">🏖️ Almuerzo · Minitas Beach Club</div></div>
+      <div class="tl-item"><div class="tl-time">🕗 8:00 PM</div><div class="tl-title">🍷 Cena · Casa de Gabriel C.</div></div>
+    </div></div>
+  </div>
+  <div class="day-card">
+    <div class="day-hdr"><div class="day-num">1</div><div class="day-meta"><div class="day-title">Viernes 1 de Mayo</div><div class="day-course">⛳ Marina · Chavón</div></div><div class="day-tag">Best Ball en Pareja</div></div>
+    <div class="day-body"><div class="tl">
+      <div class="tl-item"><div class="tl-time">🕘 10:00 AM</div><div class="tl-title">🥞 Desayuno · Casa de Eduardo</div></div>
+      <div class="tl-item big"><div class="tl-time">🕐 1:00 PM — Primer Tee Time</div><div class="tl-title">🏌️ Ronda Oficial — Best Ball</div><div class="tl-detail">📍 Marina / Chavón · Best Ball en pareja</div></div>
+      <div class="tl-item big"><div class="tl-time">🕘 9:00 PM</div><div class="tl-title">🚀 Cena Oficial · SBG Marina</div><div class="tl-badge">Reservada 🔒</div></div>
+    </div></div>
+  </div>
+  <div class="day-card final">
+    <div class="day-hdr final"><div class="day-num final">2</div><div class="day-meta"><div class="day-title">Sábado 2 de Mayo</div><div class="day-course">⛳ Punta Espada — Ronda Final</div></div><div class="day-tag gd">Match Play Individual</div></div>
+    <div class="day-body"><div class="tl">
+      <div class="tl-item"><div class="tl-time">🕘 10:00 AM</div><div class="tl-title">🥞 Desayuno Final · Casa de Gabriel C.</div></div>
+      <div class="tl-item big"><div class="tl-time">🕛 12:00 PM — Primer Tee Time</div><div class="tl-title">🏌️ RONDA FINAL — Match Play Individual</div><div class="tl-detail">📍 Punta Espada · 12 partidos mano a mano. La Copa se decide aquí.</div><div class="tl-badge">12 Partidos · 1 vs 1</div></div>
+      <div class="tl-item big"><div class="tl-time">🕣 8:30 PM</div><div class="tl-title">🏆 Cena de Clausura y Premiación</div><div class="tl-detail">📍 Casa Españoles · Entrega del trofeo 🥂</div></div>
+    </div></div>
+  </div>
+  <div class="day-card">
+    <div class="day-hdr"><div class="day-num">3</div><div class="day-meta"><div class="day-title">Domingo 3 de Mayo</div><div class="day-course">🌅 Día Libre y Despedidas</div></div><div class="day-tag sp">Día Libre</div></div>
+    <div class="day-body"><div class="tl">
+      <div class="tl-item"><div class="tl-title">☀️ Desayuno relajado en las villas</div></div>
+      <div class="tl-item"><div class="tl-title">🌊 Día libre en la Marina o la playa</div></div>
+      <div class="tl-item"><div class="tl-title">✈️ Traslados al aeropuerto</div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- TAB PARTIDOS -->
+<div id="tab-partidos" class="tab-pane">
+  <div class="admin-notice" id="admin-notice">
+    <span>⚙️</span>
+    <span>Modo Admin activo — <strong>edita nombres, hoyo y resultado</strong> en cada partido, luego pulsa 💾 Guardar cambios.</span>
+  </div>
+  <div class="m-day-title">Miércoles 29 Abr — Diente de Perro · Fourball</div>
+  <div class="m-grid" id="mg-wed"></div>
+  <div class="m-day-title">Jueves 30 Abr — Country Golf · Scramble</div>
+  <div class="m-grid" id="mg-thu"></div>
+  <div class="m-day-title">Viernes 1 May — Marina/Chavón · Best Ball</div>
+  <div class="m-grid" id="mg-fri"></div>
+  <div class="m-day-title">Sábado 2 May — Punta Espada · Match Play Individual</div>
+  <div class="m-grid" id="mg-sat"></div>
+</div>
+
+<!-- TAB TABLA -->
+<div id="tab-tabla" class="tab-pane">
+  <div class="lb-wrap">
+    <div class="lb-hdr">
+      <div class="lc day">Día</div><div class="lc fmt">Formato</div>
+      <div class="lc pts">🇻🇪</div><div class="lc pts">🇪🇸</div>
+      <div class="lc res">Resultado</div>
+    </div>
+    <div id="lb-body"></div>
+    <div class="lb-total">
+      <div class="lt-label">Total Columbus Cup</div>
+      <div class="lt-num ven" id="gt-ven">0</div>
+      <div class="lt-num esp" id="gt-esp">0</div>
+      <div style="flex:0 0 90px"></div>
+    </div>
+  </div>
+  <p style="text-align:center;font-size:10px;letter-spacing:2px;color:rgba(244,237,219,.22);text-transform:uppercase;margin-top:8px;">Para ganar: 12.5 puntos · Total disponible: 24 pts</p>
+</div>
+
+<!-- TAB INFO -->
+<div id="tab-info" class="tab-pane">
+  <div class="info-grid">
+    <div class="ic"><span class="ic-ico">🏌️</span><div class="ic-title">Formato del Torneo</div><div class="ic-body"><strong class="hl">Día 1:</strong> Fourball Match Play en pareja<br><strong class="hl">Día 2:</strong> Scramble en pareja<br><strong class="hl">Día 3:</strong> Best Ball en pareja<br><strong class="hl">Día 4:</strong> Match Play individual · 12 vs 12</div></div>
+    <div class="ic"><span class="ic-ico">🗺️</span><div class="ic-title">Los Campos</div><div class="ic-body"><strong class="hl">Diente de Perro</strong> — El mejor del Caribe. Pete Dye Design.<br><br><strong class="hl">Country Golf</strong> — Casa de Campo.<br><br><strong class="hl">Marina / Chavón</strong> — Vistas al río Chavón.<br><br><strong class="hl">Punta Espada</strong> — Jack Nicklaus. La final.</div></div>
+    <div class="ic"><span class="ic-ico">⚖️</span><div class="ic-title">Sistema de Puntos</div><div class="ic-body">Cada partido: <strong class="hl">1 punto</strong> al ganador.<br>Empate: <strong class="hl">½ punto</strong> para cada equipo.<br><br>Total disponible: <strong class="hl">24 puntos</strong><br>Para ganar: <strong class="hl">12.5 puntos</strong></div></div>
+    <div class="ic"><span class="ic-ico">🏆</span><div class="ic-title">Columbus Cup</div><div class="ic-body">12 venezolanos vs 12 españoles. Inspirado en la Ryder Cup.<br><br>Edición 2026 · La Romana, Rep. Dominicana · Casa de Campo.</div></div>
+    <div class="ic"><span class="ic-ico">📍</span><div class="ic-title">Sedes de las Cenas</div><div class="ic-body">🌙 <strong class="hl">Mar 28:</strong> Casa de Eduardo B.<br>🌙 <strong class="hl">Mié 29:</strong> Piazzeta Chavon<br>🌙 <strong class="hl">Jue 30:</strong> Casa de Gabriel C.<br>🌙 <strong class="hl">Vie 1:</strong> SBG Marina<br>🌙 <strong class="hl">Sáb 2:</strong> Casa Españoles 🏆</div></div>
+    <div class="ic"><span class="ic-ico">✈️</span><div class="ic-title">Logística</div><div class="ic-body">Llegadas: Lunes 27 / Martes 28 de Abril<br><br>Alojamiento: Villas de Casa de Campo<br><br>Aeropuertos: La Romana (LRM) o Punta Cana (PUJ)<br><br>Salidas: Domingo 3 de Mayo</div></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>Columbus Cup · La Romana 2026 · España vs. Venezuela</p>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ╔══════════════════════════════════════╗
+// ║  CONTRASEÑA ADMIN — cámbiala aquí   ║
+// ╚══════════════════════════════════════╝
+const ADMIN_PW = "columbus2026";
+
+// ─── STRUCTURE ─────────────────────────
+const DAYS = [
+  { key:'wed', label:'Mié 29', format:'Fourball · Diente de Perro', count:6,  tee:'1:40 PM', singles:false },
+  { key:'thu', label:'Jue 30', format:'Scramble · Country Golf',    count:6,  tee:'9:00 AM', singles:false },
+  { key:'fri', label:'Vie 1',  format:'Best Ball · Marina/Chavón',  count:6,  tee:'1:00 PM', singles:false },
+  { key:'sat', label:'Sáb 2',  format:'Individual · Punta Espada', count:12,  tee:'12:00 PM',singles:true  },
+];
+
+function defaultState() {
+  const s = { results:{}, names:{}, hoyos:{} };
+  DAYS.forEach(d => {
+    s.results[d.key] = Array(d.count).fill(null);
+    s.names[d.key]   = Array.from({length:d.count}, (_,i) => ({
+      ven: d.singles ? `Jugador Venezuela ${i+1}` : `Pareja Venezuela ${i+1}`,
+      esp: d.singles ? `Jugador España ${i+1}`    : `Pareja España ${i+1}`
+    }));
+    s.hoyos[d.key] = Array(d.count).fill('');
+  });
+  return s;
+}
+
+let STATE   = defaultState();
+let isAdmin = false;
+
+// ─── PERSISTENCE ───────────────────────
+function loadState() {
+  try {
+    const raw = localStorage.getItem('cc2026');
+    if (!raw) return;
+    const sv = JSON.parse(raw);
+    DAYS.forEach(d => {
+      if (sv.results?.[d.key]) STATE.results[d.key] = sv.results[d.key];
+      if (sv.names?.[d.key])   STATE.names[d.key]   = sv.names[d.key];
+      if (sv.hoyos?.[d.key])   STATE.hoyos[d.key]   = sv.hoyos[d.key];
+    });
+  } catch(e) {}
+}
+function saveState() {
+  try { localStorage.setItem('cc2026', JSON.stringify(STATE)); } catch(e) {}
+}
+
+// Harvest live input values before any operation
+function harvest() {
+  DAYS.forEach(d => {
+    for (let i = 0; i < d.count; i++) {
+      const vi = document.getElementById(`nv-${d.key}-${i}`);
+      const ei = document.getElementById(`ne-${d.key}-${i}`);
+      const hi = document.getElementById(`ho-${d.key}-${i}`);
+      if (vi) STATE.names[d.key][i].ven = vi.value;
+      if (ei) STATE.names[d.key][i].esp = ei.value;
+      if (hi) STATE.hoyos[d.key][i]     = hi.value;
+    }
+  });
+}
+
+// ─── AUTH ──────────────────────────────
+function openLogin() {
+  document.getElementById('login-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('pw-input').focus(),120);
+}
+function closeLogin() {
+  document.getElementById('login-modal').classList.remove('open');
+  document.getElementById('pw-input').value='';
+  document.getElementById('pw-err').textContent='';
+}
+function tryLogin() {
+  if (document.getElementById('pw-input').value === ADMIN_PW) {
+    isAdmin = true; closeLogin(); applyAdminUI(true);
+    DAYS.forEach(d => renderMatches(d.key));
+    showToast('✅ Bienvenido, Administrador');
+  } else {
+    document.getElementById('pw-err').textContent = 'Contraseña incorrecta';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+function logout() {
+  harvest(); isAdmin = false; applyAdminUI(false);
+  DAYS.forEach(d => renderMatches(d.key));
+  showToast('👁 Modo espectador');
+}
+function applyAdminUI(on) {
+  document.getElementById('mode-dot').className   = 'mode-dot ' + (on?'admin':'viewer');
+  document.getElementById('mode-label').className = 'ab-mode '  + (on?'admin':'viewer');
+  document.getElementById('mode-label').textContent = on ? '⚙️  Admin activo' : 'Modo Espectador';
+  document.getElementById('btn-login').style.display  = on ? 'none' : '';
+  document.getElementById('btn-logout').style.display = on ? '' : 'none';
+  document.getElementById('btn-save').style.display   = on ? '' : 'none';
+  const n = document.getElementById('admin-notice');
+  on ? n.classList.add('show') : n.classList.remove('show');
+}
+
+// ─── SAVE ──────────────────────────────
+function saveData() {
+  harvest(); saveState(); recalc();
+  const b = document.getElementById('btn-save');
+  b.textContent='✓ Guardado'; b.classList.add('saving');
+  setTimeout(()=>{b.textContent='💾 Guardar cambios'; b.classList.remove('saving');}, 2000);
+  showToast('💾 Cambios guardados correctamente');
+}
+
+// ─── TABS ──────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── RENDER ────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderMatches(k) {
+  const day  = DAYS.find(d=>d.key===k);
+  const grid = document.getElementById('mg-'+k);
+  grid.innerHTML = '';
+
+  STATE.results[k].forEach((res, i) => {
+    const vd = res==='ven'?'dv': res==='half'?'dh':'';
+    const ed = res==='esp'?'de': res==='half'?'dh':'';
+    const rc = res==='ven'?'rv': res==='esp'?'re': res==='half'?'rh':'';
+    const rl = res==='ven'?'🇻🇪 Venezuela gana': res==='esp'?'🇪🇸 España gana': res==='half'?'½ · ½ Empatado':'Pendiente';
+    const vn = esc(STATE.names[k][i].ven);
+    const en = esc(STATE.names[k][i].esp);
+    const ho = esc(STATE.hoyos[k][i] || '');
+    const lbl = day.singles ? 'Singles' : 'Parejas';
+
+    const card = document.createElement('div');
+    card.className = 'm-card';
+
+    if (isAdmin) {
+      card.innerHTML = `
+        <div class="m-head">
+          <span class="m-num">Partido ${i+1} · ${lbl}</span>
+          <span class="m-tee">${day.tee}</span>
+        </div>
+        <div class="m-row">
+          <span class="m-flag">🇻🇪</span>
+          <input class="m-name-input" id="nv-${k}-${i}" value="${vn}" placeholder="Nombre Venezuela">
+          <div class="m-dot ${vd}"></div>
+        </div>
+        <div class="m-row">
+          <span class="m-flag">🇪🇸</span>
+          <input class="m-name-input" id="ne-${k}-${i}" value="${en}" placeholder="Nombre España">
+          <div class="m-dot ${ed}"></div>
+        </div>
+        <div class="m-foot">
+          <div class="m-hoyo-wrap">
+            <span class="m-hoyo-label">Hoyo</span>
+            <input class="m-hoyo-input" id="ho-${k}-${i}" value="${ho}" placeholder="—" maxlength="4">
+          </div>
+          <div class="rbts">
+            <button class="rb ven ${res==='ven'?'active':''}" onclick="setR('${k}',${i},'ven')">🇻🇪 Gana</button>
+            <button class="rb half ${res==='half'?'active':''}" onclick="setR('${k}',${i},'half')">½</button>
+            <button class="rb esp ${res==='esp'?'active':''}" onclick="setR('${k}',${i},'esp')">🇪🇸 Gana</button>
+          </div>
+        </div>`;
+    } else {
+      card.innerHTML = `
+        <div class="m-head">
+          <span class="m-num">Partido ${i+1} · ${lbl}</span>
+          <span class="m-tee">${day.tee}</span>
+        </div>
+        <div class="m-row">
+          <span class="m-flag">🇻🇪</span>
+          <span class="m-name">${vn}</span>
+          <div class="m-dot ${vd}"></div>
+        </div>
+        <div class="m-row">
+          <span class="m-flag">🇪🇸</span>
+          <span class="m-name">${en}</span>
+          <div class="m-dot ${ed}"></div>
+        </div>
+        <div class="m-foot">
+          <div class="m-hoyo-wrap">
+            <span class="m-hoyo-label">Hoyo</span>
+            <span class="m-hoyo-val">${ho || '—'}</span>
+          </div>
+          <span class="m-res ${rc}">${rl}</span>
+        </div>`;
+    }
+    grid.appendChild(card);
+  });
+}
+
+// ─── SET RESULT ────────────────────────
+function setR(k, i, val) {
+  if (!isAdmin) return;
+  // Save current input values first
+  const vi=document.getElementById(`nv-${k}-${i}`);
+  const ei=document.getElementById(`ne-${k}-${i}`);
+  const hi=document.getElementById(`ho-${k}-${i}`);
+  if(vi) STATE.names[k][i].ven = vi.value;
+  if(ei) STATE.names[k][i].esp = ei.value;
+  if(hi) STATE.hoyos[k][i]     = hi.value;
+  // Toggle
+  STATE.results[k][i] = STATE.results[k][i]===val ? null : val;
+  renderMatches(k); recalc();
+  const msgs={ven:'🇻🇪 Venezuela gana el partido',esp:'🇪🇸 España gana el partido',half:'½ Partido empatado'};
+  showToast(STATE.results[k][i] ? msgs[STATE.results[k][i]] : '↺ Resultado eliminado');
+}
+
+// ─── RECALC ────────────────────────────
+function fmt(n){ return n.toString(); }
+
+function recalc() {
+  let v=0,e=0;
+  DAYS.forEach(d=>STATE.results[d.key].forEach(r=>{
+    if(r==='ven')v+=1; else if(r==='esp')e+=1; else if(r==='half'){v+=.5;e+=.5;}
+  }));
+  const ve=document.getElementById('sVen'), ee=document.getElementById('sEsp');
+  if(ve.textContent!==fmt(v)){ve.textContent=fmt(v);ve.classList.remove('flash-anim');void ve.offsetWidth;ve.classList.add('flash-anim');}
+  if(ee.textContent!==fmt(e)){ee.textContent=fmt(e);ee.classList.remove('flash-anim');void ee.offsetWidth;ee.classList.add('flash-anim');}
+  const nt=document.getElementById('sbNote'), tot=v+e;
+  if(tot===0) nt.textContent='Torneo aún no comenzado · El marcador se actualiza desde los partidos';
+  else if(v===e) nt.textContent='🤝 Igualados — La Copa está completamente abierta';
+  else if(v>e) nt.textContent=`🇻🇪 Venezuela lidera por ${fmt(v-e)} punto${(v-e)!==1?'s':''}`;
+  else nt.textContent=`🇪🇸 España lidera por ${fmt(e-v)} punto${(e-v)!==1?'s':''}`;
+  updateLB();
+}
+
+// ─── LEADERBOARD ───────────────────────
+function updateLB() {
+  let tv=0,te=0;
+  const body=document.getElementById('lb-body');
+  body.innerHTML='';
+  DAYS.forEach(d=>{
+    let v=0,e=0;
+    STATE.results[d.key].forEach(r=>{
+      if(r==='ven')v+=1; else if(r==='esp')e+=1; else if(r==='half'){v+=.5;e+=.5;}
+    });
+    tv+=v; te+=e;
+    const res=(v===0&&e===0)?'—':v>e?'🇻🇪 VEN':e>v?'🇪🇸 ESP':'½½ TIE';
+    const row=document.createElement('div');
+    row.className='lb-row';
+    row.innerHTML=`<div class="ld">${d.label}</div><div class="lf">${d.format}</div><div class="lp ven">${v>0?fmt(v):'—'}</div><div class="lp esp">${e>0?fmt(e):'—'}</div><div class="lr">${res}</div>`;
+    body.appendChild(row);
+  });
+  document.getElementById('gt-ven').textContent=fmt(tv)||'0';
+  document.getElementById('gt-esp').textContent=fmt(te)||'0';
+}
+
+// ─── TOAST ─────────────────────────────
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// ─── INIT ──────────────────────────────
+loadState();
+DAYS.forEach(d=>renderMatches(d.key));
+recalc();
+
+// Close modal clicking outside
+document.getElementById('login-modal').addEventListener('click', function(e){
+  if(e.target===this) closeLogin();
+});
+</script>
+</body>
+</html>
