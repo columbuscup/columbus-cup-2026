@@ -178,6 +178,30 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .ic-body{font-size:12px;color:rgba(244,237,219,.55);line-height:1.7;}
 .hl{color:var(--gold-l);}
 
+/* REGLAS */
+.rules-wrap{max-width:880px;margin:0 auto;}
+.rules-intro{text-align:center;margin-bottom:32px;padding:32px 28px;background:linear-gradient(135deg,rgba(201,168,76,.08),rgba(201,168,76,.02));border:1px solid rgba(201,168,76,.25);border-radius:18px;}
+.rules-intro-ico{font-size:34px;margin-bottom:14px;}
+.rules-intro-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold);margin-bottom:10px;letter-spacing:1px;}
+.rules-intro-body{font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(244,237,219,.7);font-style:italic;line-height:1.75;max-width:620px;margin:0 auto;}
+.r-section{background:rgba(18,40,21,.6);border:1px solid rgba(201,168,76,.14);border-radius:14px;margin-bottom:14px;overflow:hidden;transition:border-color .25s,transform .25s;}
+.r-section:hover{border-color:rgba(201,168,76,.3);transform:translateY(-1px);}
+.r-head{display:flex;align-items:center;gap:18px;padding:18px 24px;background:linear-gradient(90deg,rgba(201,168,76,.08),transparent);border-bottom:1px solid rgba(201,168,76,.1);}
+.r-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--gold);opacity:.55;line-height:1;min-width:56px;letter-spacing:1px;}
+.r-title{flex:1;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--cream);letter-spacing:.3px;}
+.r-ico{font-size:20px;opacity:.9;}
+.r-body{padding:20px 28px 24px 28px;font-size:13px;line-height:1.8;color:rgba(244,237,219,.7);}
+.r-body p{margin-bottom:10px;}
+.r-body p:last-child{margin-bottom:0;}
+.r-body ul{list-style:none;padding:0;margin:0;}
+.r-body ul li{padding:5px 0 5px 18px;position:relative;}
+.r-body ul li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:8px;top:9px;opacity:.8;}
+.r-body strong{color:var(--gold-l);font-weight:600;}
+.r-sub{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--gold-l);margin:14px 0 6px;letter-spacing:.5px;}
+.r-sub:first-child{margin-top:0;}
+.r-quote{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold-l);border-left:2px solid var(--gold);padding:10px 0 10px 16px;margin:14px 0 4px;font-size:15px;line-height:1.6;}
+.rules-closing{text-align:center;margin-top:28px;padding:24px;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(201,168,76,.7);letter-spacing:.5px;border-top:1px solid rgba(201,168,76,.15);}
+
 /* TOAST */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,26,12,.97);border:1px solid var(--gold);border-radius:40px;padding:12px 28px;font-size:13px;font-weight:600;color:var(--gold-l);letter-spacing:1px;z-index:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
@@ -264,6 +288,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <button class="tab-btn" onclick="switchTab('partidos',this)">⛳ Partidos</button>
     <button class="tab-btn" onclick="switchTab('tabla',this)">🏆 Tabla</button>
     <button class="tab-btn" onclick="switchTab('info',this)">ℹ️ Info</button>
+    <button class="tab-btn" onclick="switchTab('reglas',this)">📜 Reglas</button>
   </div>
 </div>
 
@@ -303,7 +328,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
   <div class="day-card final">
     <div class="day-hdr final"><div class="day-num final">2</div><div class="day-meta"><div class="day-title">Sábado 2 de Mayo</div><div class="day-course">⛳ Punta Espada — Ronda Final</div></div><div class="day-tag gd">Match Play Individual</div></div>
     <div class="day-body"><div class="tl">
-      <div class="tl-item"><div class="tl-time">🕘 8:00 AM</div><div class="tl-title">🥞 Desayuno Final · Casa de Gabriel C.</div></div>
+      <div class="tl-item"><div class="tl-time">🕘 10:00 AM</div><div class="tl-title">🥞 Desayuno Final · Casa de Gabriel C.</div></div>
       <div class="tl-item big"><div class="tl-time">🕛 12:00 PM — Primer Tee Time</div><div class="tl-title">🏌️ RONDA FINAL — Match Play Individual</div><div class="tl-detail">📍 Punta Espada · 12 partidos mano a mano. La Copa se decide aquí.</div><div class="tl-badge">12 Partidos · 1 vs 1</div></div>
       <div class="tl-item big"><div class="tl-time">🕣 8:30 PM</div><div class="tl-title">🏆 Cena de Clausura y Premiación</div><div class="tl-detail">📍 Casa Españoles · Entrega del trofeo 🥂</div></div>
     </div></div>
@@ -362,6 +387,176 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
     <div class="ic"><span class="ic-ico">🏆</span><div class="ic-title">Columbus Cup</div><div class="ic-body">12 venezolanos vs 12 españoles. Inspirado en la Ryder Cup.<br><br>Edición 2026 · La Romana, Rep. Dominicana · Casa de Campo.</div></div>
     <div class="ic"><span class="ic-ico">📍</span><div class="ic-title">Sedes de las Cenas</div><div class="ic-body">🌙 <strong class="hl">Mar 28:</strong> Casa de Eduardo B.<br>🌙 <strong class="hl">Mié 29:</strong> Piazzeta Chavon<br>🌙 <strong class="hl">Jue 30:</strong> Casa de Gabriel C.<br>🌙 <strong class="hl">Vie 1:</strong> SBG Marina<br>🌙 <strong class="hl">Sáb 2:</strong> Casa Españoles 🏆</div></div>
     <div class="ic"><span class="ic-ico">✈️</span><div class="ic-title">Logística</div><div class="ic-body">Llegadas: Lunes 27 / Martes 28 de Abril<br><br>Alojamiento: Villas de Casa de Campo<br><br>Aeropuertos: La Romana (LRM) o Punta Cana (PUJ)<br><br>Salidas: Domingo 3 de Mayo</div></div>
+  </div>
+</div>
+
+<!-- TAB REGLAS -->
+<div id="tab-reglas" class="tab-pane">
+  <div class="rules-wrap">
+
+    <div class="rules-intro">
+      <div class="rules-intro-ico">📜</div>
+      <div class="rules-intro-title">Reglamento Oficial</div>
+      <div class="rules-intro-body">"El golf es un juego de caballeros. Ganar es importante — pero el honor, la amistad y el respeto al juego prevalecen sobre cualquier resultado."</div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">I</div><div class="r-title">Formato General del Torneo</div><span class="r-ico">🏆</span></div>
+      <div class="r-body">
+        <ul>
+          <li>Competencia por equipos al estilo <strong>Ryder Cup</strong>: <strong>Venezuela 🇻🇪 vs España 🇪🇸</strong></li>
+          <li><strong>12 jugadores</strong> por equipo</li>
+          <li><strong>4 días</strong> de competencia oficial (29 de Abril — 2 de Mayo)</li>
+          <li><strong>24 puntos</strong> totales en disputa a lo largo del torneo</li>
+          <li>Para levantar la Copa se necesitan <strong>12.5 puntos</strong></li>
+          <li>La Cena de Bienvenida (28 Abr) incluye el <strong>sorteo oficial</strong> de emparejamientos del primer día</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">II</div><div class="r-title">Formatos de Juego por Día</div><span class="r-ico">⛳</span></div>
+      <div class="r-body">
+
+        <div class="r-sub">Miércoles 29 · Fourball Match Play — Diente de Perro</div>
+        <ul>
+          <li>Cada jugador juega su propia bola los 18 hoyos</li>
+          <li>Se toma el <strong>mejor score de la pareja</strong> en cada hoyo</li>
+          <li>Match play: se gana <strong>hoyo por hoyo</strong>, no por score total</li>
+          <li>El partido puede cerrarse antes del hoyo 18 (ej. 5&4, 3&2, 2up, etc.)</li>
+          <li><strong>6 partidos · 6 puntos en juego</strong></li>
+        </ul>
+
+        <div class="r-sub">Jueves 30 · Scramble en Pareja — Country Golf</div>
+        <ul>
+          <li>Ambos jugadores golpean desde el tee; se elige la mejor bola</li>
+          <li>Ambos juegan el siguiente golpe desde esa posición (drop dentro de <strong>un palo</strong>, no más cerca al hoyo)</li>
+          <li>En el green: bola colocada dentro de <strong>15 cm</strong> de la marca original, nunca más cerca al hoyo</li>
+          <li>No se puede reubicar fuera de bunker, agua o rough alto hacia terreno más ventajoso</li>
+          <li><strong>6 partidos · 6 puntos en juego</strong></li>
+        </ul>
+
+        <div class="r-sub">Viernes 1 · Best Ball en Pareja — Marina / Chavón</div>
+        <ul>
+          <li>Similar al Fourball: cada jugador juega su bola</li>
+          <li>Se cuenta el <strong>mejor resultado</strong> de la pareja por hoyo</li>
+          <li>Match play hoyo por hoyo contra la pareja rival</li>
+          <li><strong>6 partidos · 6 puntos en juego</strong></li>
+        </ul>
+
+        <div class="r-sub">Sábado 2 · Match Play Individual — Punta Espada</div>
+        <ul>
+          <li><strong>12 partidos mano a mano</strong>, 1 vs 1</li>
+          <li>Cada partido vale <strong>1 punto</strong> al ganador, <strong>½</strong> si se empata</li>
+          <li><strong>12 puntos en juego — aquí se decide la Copa</strong></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">III</div><div class="r-title">Sistema de Puntuación</div><span class="r-ico">⚖️</span></div>
+      <div class="r-body">
+        <ul>
+          <li>Partido ganado: <strong>1 punto</strong> para el equipo</li>
+          <li>Partido empatado (AS tras 18 hoyos): <strong>½ punto</strong> para cada equipo</li>
+          <li>Total disponible: <strong>24 puntos</strong> (6 + 6 + 6 + 12)</li>
+          <li>Para ganar: <strong>12.5 puntos</strong></li>
+          <li class="r-quote">En caso de empate total 12–12, el <strong>campeón defensor retiene la Copa</strong> (tradición Ryder Cup). De no haber campeón previo, el comité decidirá hoyo de desempate.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">IV</div><div class="r-title">Handicaps</div><span class="r-ico">🎯</span></div>
+      <div class="r-body">
+        <ul>
+          <li>Todos los jugadores compiten con su <strong>handicap oficial vigente</strong> (presentado antes del Martes 28)</li>
+          <li><strong>Match Play Individual:</strong> diferencia de handicaps aplicada en los hoyos de menor stroke index del campo</li>
+          <li><strong>Fourball y Best Ball:</strong> cada jugador recibe el <strong>85%</strong> de sus golpes en los hoyos correspondientes según stroke index</li>
+          <li><strong>Scramble:</strong> la pareja juega al <strong>35% del handicap más bajo + 15% del más alto</strong> como handicap de equipo</li>
+          <li>En caso de duda, prevalece la decisión del comité</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">V</div><div class="r-title">Reglas de Juego</div><span class="r-ico">📖</span></div>
+      <div class="r-body">
+        <ul>
+          <li>Aplican las <strong>Reglas Oficiales del Golf</strong> (USGA / R&A) en su versión más reciente</li>
+          <li>Aplican además las <strong>reglas locales</strong> de cada campo de Casa de Campo (indicadas en el scorecard)</li>
+          <li>Se permite <strong>preferred lies</strong> (bola colocada a un palo, no más cerca al hoyo) únicamente si el comité lo autoriza por condiciones del campo</li>
+          <li>Bola perdida o fuera de límites: procedimiento estándar USGA</li>
+          <li>Cualquier disputa se resuelve al final del hoyo o al terminar la ronda ante el comité</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">VI</div><div class="r-title">Ritmo de Juego</div><span class="r-ico">⏱️</span></div>
+      <div class="r-body">
+        <ul>
+          <li>Tiempo máximo por ronda: <strong>4 horas 30 minutos</strong></li>
+          <li><strong>Ready golf</strong> permitido y fomentado en Fourball, Scramble y Best Ball</li>
+          <li>En Match Play Individual prevalece el orden tradicional (honor en tee, bola más lejana al hoyo juega primero)</li>
+          <li>Estar <strong>preparado para golpear</strong> cuando llegue el turno: club elegido, yardaje calculado, rutina lista</li>
+          <li>Si el partido atrasa al grupo siguiente por más de un hoyo, el comité puede instruir dejar pasar</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">VII</div><div class="r-title">Dress Code</div><span class="r-ico">👔</span></div>
+      <div class="r-body">
+        <div class="r-sub">En el Campo</div>
+        <ul>
+          <li><strong>Polo con cuello</strong> obligatorio</li>
+          <li>Pantalón largo de golf o bermuda de golf (no shorts deportivos)</li>
+          <li>Zapatos de golf con <strong>spikes blandos</strong></li>
+          <li>Gorra o visera permitida (se retira al entrar al clubhouse)</li>
+          <li>Prohibido: jeans, camisetas sin cuello, pantalones cortos deportivos, traje de baño</li>
+        </ul>
+
+        <div class="r-sub">En las Cenas</div>
+        <ul>
+          <li><strong>Smart Casual</strong> por defecto (camisa, pantalón o bermuda elegante)</li>
+          <li>Cena de Clausura (Sábado 2): se sugiere <strong>Resort Elegante</strong> — los colores del equipo son bienvenidos 🇻🇪🇪🇸</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">VIII</div><div class="r-title">Etiqueta y Espíritu del Juego</div><span class="r-ico">🤝</span></div>
+      <div class="r-body">
+        <ul>
+          <li>Respeto absoluto al contrincante, al campo y a los caddies</li>
+          <li><strong>Silencio</strong> mientras un jugador (propio o rival) ejecuta su golpe</li>
+          <li>No celebraciones excesivas que puedan incomodar al rival</li>
+          <li><strong>Reparar divots</strong>, pitch marks en el green y <strong>rastrillar bunkers</strong> siempre</li>
+          <li>Los partidos se juegan con cordialidad — los pique deportivo es bienvenido, la mala fe no</li>
+          <li class="r-quote">"Se puede competir con fiereza y seguir siendo caballero. Ese es el golf que jugamos aquí."</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="r-section">
+      <div class="r-head"><div class="r-num">IX</div><div class="r-title">Comité del Torneo</div><span class="r-ico">⚖️</span></div>
+      <div class="r-body">
+        <ul>
+          <li>El comité está conformado por los <strong>capitanes de ambos equipos</strong></li>
+          <li>Sus decisiones en disputas de reglas, handicaps, emparejamientos y penalizaciones son <strong>finales e inapelables</strong></li>
+          <li>En caso de condiciones adversas (clima, retraso, etc.) el comité puede modificar el formato, acortar la ronda o aplazar el partido</li>
+          <li>Cualquier caso no contemplado en este reglamento queda a criterio del comité</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rules-closing">
+      "Que gane el mejor equipo — y que la amistad gane siempre."<br>
+      <span style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-top:10px;display:inline-block;">Columbus Cup · La Romana 2026</span>
+    </div>
+
   </div>
 </div>
 
